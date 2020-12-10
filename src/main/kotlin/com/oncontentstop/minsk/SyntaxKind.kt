@@ -11,6 +11,8 @@ enum class SyntaxKind {
     StarToken,
     SlashToken,
     OpenParenthesisToken,
-    CloseParenthesisToken
+    CloseParenthesisToken,
 
+    LiteralExpression,
+    BinaryExpression
 }

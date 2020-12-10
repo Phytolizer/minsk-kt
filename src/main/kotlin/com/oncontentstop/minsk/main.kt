@@ -10,19 +10,39 @@ fun main() {
             break
         }
 
-        val lexer = Lexer(line)
-        while (true) {
-            val token = lexer.lex()
-            print("${token.kind}: '${token.text}'")
-            if (token.value != null) {
-                print(" ${token.value}")
-            }
-            println()
+        val parser = Parser(line)
+        val expression = parser.parse()
 
-            if (token.kind == SyntaxKind.EndOfFileToken) {
-                break
-            }
-        }
+        print(ConsoleColors.WHITE)
+        prettyPrint(expression)
+        print(ConsoleColors.RESET)
+    }
+}
+
+fun prettyPrint(root: SyntaxNode, indent: String = "", isLast: Boolean = true) {
+    print(indent)
+    if (isLast) {
+        print("\\--")
+    } else {
+        print("+--")
+    }
+    print(root.kind)
+    if (root is SyntaxToken && root.value != null) {
+        print(" ${root.value}")
+    }
+    println()
+
+    var nextIndent = indent
+    nextIndent += if (isLast) {
+        "   "
+    } else {
+        "|  "
+    }
+
+    val lastChild = root.children.lastOrNull()
+
+    for (child in root.children) {
+        prettyPrint(child, nextIndent, child == lastChild)
     }
 }
 
