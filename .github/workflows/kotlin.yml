@@ -33,3 +33,6 @@ jobs:
         with:
           wrapper-directory: .
           arguments: runOnGitHub
+          wrapper-cache-enabled: true
+          dependencies-cache-enabled: true
+          configuration-cache-enabled: true
