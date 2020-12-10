@@ -9,13 +9,21 @@ fun main() {
         if (line.isNullOrEmpty()) {
             break
         }
+        val errorReporter = StringErrorReporter()
 
-        val parser = Parser(line)
+        val parser = Parser(line, errorReporter)
         val expression = parser.parse()
 
         print(ConsoleColors.WHITE)
         prettyPrint(expression)
         print(ConsoleColors.RESET)
+        if (errorReporter.errors.count() > 0) {
+            print(ConsoleColors.RED)
+            for (error in errorReporter.errors) {
+                println(error)
+            }
+            print(ConsoleColors.RESET)
+        }
     }
 }
 

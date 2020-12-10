@@ -1,11 +1,11 @@
 package com.oncontentstop.minsk
 
-class Parser(text: String) {
+class Parser(text: String, private val errorReporter: ErrorReporter) {
     private var position = 0
     private val tokens: List<SyntaxToken>
 
     init {
-        val lexer = Lexer(text)
+        val lexer = Lexer(text, errorReporter)
         val tempTokens = mutableListOf<SyntaxToken>()
         while (true) {
             val token = lexer.lex()
@@ -46,6 +46,7 @@ class Parser(text: String) {
             return nextToken()
         }
 
+        errorReporter.report("Unexpected token <${current.kind}>, expected <$kind>")
         return SyntaxToken(kind, current.position, "", null)
     }
 

@@ -1,6 +1,9 @@
 package com.oncontentstop.minsk
 
-class Lexer(private val text: String) {
+class Lexer(
+    private val text: String,
+    private val errorReporter: ErrorReporter
+) {
     private var position = 0
     private var start = 0
     private var kind = SyntaxKind.BadToken
@@ -48,7 +51,7 @@ class Lexer(private val text: String) {
         }
 
         if (kind == SyntaxKind.BadToken) {
-            TODO()
+            errorReporter.report("Bad character in input: '$tokenText'")
         }
         return SyntaxToken(kind, start, tokenText, value)
     }
@@ -67,6 +70,10 @@ class Lexer(private val text: String) {
         }
 
         kind = SyntaxKind.NumberToken
-        value = Integer.parseInt(tokenText)
+        try {
+            value = Integer.parseInt(tokenText)
+        } catch (e: NumberFormatException) {
+            errorReporter.report("Numeric literal does not fit in a Kotlin integer: $tokenText")
+        }
     }
 }
