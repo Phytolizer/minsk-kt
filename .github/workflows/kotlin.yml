@@ -28,8 +28,7 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 15
-      - name: Install Gradle
-        run: "sudo apt-get update && sudo apt-get install gradle"
-
-      - name: Gradle Command
-        run: "gradle tasks && gradle test"
+      - name: Test with Gradle
+        uses: eskatos/gradle-command-action@v1.3.3
+        with:
+          arguments: runOnGitHub
