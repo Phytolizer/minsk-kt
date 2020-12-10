@@ -32,4 +32,4 @@ jobs:
         run: "sudo apt-get update && sudo apt-get install gradle"
 
       - name: Gradle Command
-        run: "gradle runOnGitHub"
+        run: "gradle tasks && gradle test"
