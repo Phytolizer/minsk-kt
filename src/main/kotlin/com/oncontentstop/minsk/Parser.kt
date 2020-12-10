@@ -64,6 +64,17 @@ class Parser(text: String, private val errorReporter: ErrorReporter) {
     }
 
     private fun parsePrimaryExpression(): ExpressionSyntax {
+        if (current.kind == SyntaxKind.OpenParenthesisToken) {
+            val openParenthesisToken = nextToken()
+            val expression = parseExpression()
+            val closeParenthesisToken =
+                matchToken(SyntaxKind.CloseParenthesisToken)
+            return ParenthesizedExpressionSyntax(
+                openParenthesisToken,
+                expression,
+                closeParenthesisToken
+            )
+        }
         val literalToken = matchToken(SyntaxKind.NumberToken)
         return LiteralExpressionSyntax(literalToken)
     }

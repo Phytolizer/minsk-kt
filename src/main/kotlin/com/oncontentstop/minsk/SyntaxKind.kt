@@ -14,5 +14,6 @@ enum class SyntaxKind {
     CloseParenthesisToken,
 
     LiteralExpression,
-    BinaryExpression
+    BinaryExpression,
+    ParenthesizedExpression
 }

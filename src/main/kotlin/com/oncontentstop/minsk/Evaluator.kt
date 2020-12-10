@@ -5,16 +5,19 @@ class Evaluator(private val root: ExpressionSyntax) {
         return evaluateExpression(root)
     }
 
-    fun evaluateExpression(root: ExpressionSyntax): Int {
-        when (root.kind) {
-            SyntaxKind.BinaryExpression -> {
-                return evaluateBinaryExpression(root as BinaryExpressionSyntax)
-            }
-            SyntaxKind.LiteralExpression -> {
-                return evaluateLiteralExpression(root as LiteralExpressionSyntax)
-            }
+    private fun evaluateExpression(root: ExpressionSyntax): Int {
+        return when (root.kind) {
+            SyntaxKind.BinaryExpression -> evaluateBinaryExpression(root as BinaryExpressionSyntax)
+            SyntaxKind.LiteralExpression -> evaluateLiteralExpression(root as LiteralExpressionSyntax)
+            SyntaxKind.ParenthesizedExpression -> evaluateParenthesizedExpression(
+                root as ParenthesizedExpressionSyntax
+            )
             else -> throw Error("Unexpected node kind ${root.kind}")
         }
+    }
+
+    private fun evaluateParenthesizedExpression(root: ParenthesizedExpressionSyntax): Int {
+        return evaluateExpression(root.expression)
     }
 
     private fun evaluateLiteralExpression(root: LiteralExpressionSyntax): Int {
