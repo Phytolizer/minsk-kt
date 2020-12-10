@@ -29,3 +29,9 @@ tasks.withType<KotlinCompile>() {
 application {
     mainClassName = "MainKt"
 }
+
+tasks.register("runOnGitHub") {
+    dependsOn(":test")
+    group = "custom"
+    description = "gradle runOnGithub"
+}
