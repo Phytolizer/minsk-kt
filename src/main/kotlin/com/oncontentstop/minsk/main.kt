@@ -11,11 +11,10 @@ fun main() {
         }
         val errorReporter = StringErrorReporter()
 
-        val parser = Parser(line, errorReporter)
-        val expression = parser.parse()
+        val syntaxTree = SyntaxTree.parse(line, errorReporter)
 
         print(ConsoleColors.WHITE)
-        prettyPrint(expression)
+        prettyPrint(syntaxTree.root)
         print(ConsoleColors.RESET)
         if (errorReporter.errors.count() > 0) {
             print(ConsoleColors.RED)
@@ -23,6 +22,10 @@ fun main() {
                 println(error)
             }
             print(ConsoleColors.RESET)
+        } else {
+            val evaluator = Evaluator(syntaxTree.root)
+            val value = evaluator.evaluate()
+            println(value)
         }
     }
 }
@@ -53,4 +56,3 @@ fun prettyPrint(root: SyntaxNode, indent: String = "", isLast: Boolean = true) {
         prettyPrint(child, nextIndent, child == lastChild)
     }
 }
-

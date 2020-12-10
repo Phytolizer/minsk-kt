@@ -19,7 +19,13 @@ class Parser(text: String, private val errorReporter: ErrorReporter) {
         tokens = tempTokens
     }
 
-    fun parse(): ExpressionSyntax {
+    fun parse(): SyntaxTree {
+        val expression = parseExpression()
+        val endOfFileToken = matchToken(SyntaxKind.EndOfFileToken)
+        return SyntaxTree(errorReporter, expression, endOfFileToken)
+    }
+
+    private fun parseExpression(): ExpressionSyntax {
         var left = parsePrimaryExpression()
 
         while (current.kind in sequenceOf(
