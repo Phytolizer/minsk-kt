@@ -26,11 +26,32 @@ class Parser(text: String, private val errorReporter: ErrorReporter) {
     }
 
     private fun parseExpression(): ExpressionSyntax {
-        var left = parsePrimaryExpression()
+        return parseTerm()
+    }
+
+    private fun parseTerm(): ExpressionSyntax {
+        var left = parseFactor()
 
         while (current.kind in sequenceOf(
                 SyntaxKind.PlusToken,
                 SyntaxKind.MinusToken
+            )
+        ) {
+            val operatorToken = nextToken()
+            val right = parseFactor()
+
+            left = BinaryExpressionSyntax(left, operatorToken, right)
+        }
+
+        return left
+    }
+
+    private fun parseFactor(): ExpressionSyntax {
+        var left = parsePrimaryExpression()
+
+        while (current.kind in sequenceOf(
+                SyntaxKind.StarToken,
+                SyntaxKind.SlashToken
             )
         ) {
             val operatorToken = nextToken()
