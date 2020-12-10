@@ -27,7 +27,7 @@ tasks.withType<KotlinCompile>() {
 }
 
 application {
-    mainClassName = "MainKt"
+    mainClass.set("MainKt")
 }
 
 tasks.register("runOnGitHub") {
